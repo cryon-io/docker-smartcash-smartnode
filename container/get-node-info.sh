@@ -21,15 +21,21 @@
 ver=$(./get-version.sh)
 type="SMARTCASH_SMART"
 mn_status=$(smartcash-cli -rpcuser=healthcheck -rpcpassword=healthcheck getmasternodestatus | jq .message)
+block_count="$(smartcash-cli getblockchaininfo | jq .blocks)"
+sync_status="$(smartcash-cli mnsync status | jq .IsBlockchainSynced)"
 
 printf "\
 TYPE: %s \n\
 VERSION: %s \n\
 MN_STATUS: %s \n\
-" "$type" "$ver" "$mn_status" > /home/smartcash/.smartcash/node.info
+BLOCKS: %s \n\
+SYNCED: %s \n\
+" "$type" "$ver" "$mn_status" "$block_count" "$sync_status" > /home/smartcash/.smartcash/node.info
 
 printf "\
 TYPE: %s \n\
 VERSION: %s \n\
 MN_STATUS: %s \n\
-" "$type" "$ver" "$mn_status"
+BLOCKS: %s \n\
+SYNCED: %s \n\
+" "$type" "$ver" "$mn_status" "$block_count" "$sync_status"
