@@ -13,7 +13,7 @@ SMARTCASH Donations: `SS7TdUxQDzJLmPjoZ93bNf9eashThFpwj6`
 
 (If you run on VPS provider, which uses OpenVZ, setup requires at OpenVZ 7)
 
-## Setup ANS (AUTONOMOUS MASTERNODE SYSTEM - recommended)
+## Setup ANS (AUTONOMOUS NODE SYSTEM - recommended)
 
 1. - `git clone "https://github.com/cryon-io/ans.git" [path] && cd [path] && chmod +x ./ans` # replace path with directory you want to store node in
    or 

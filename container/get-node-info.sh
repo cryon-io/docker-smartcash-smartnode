@@ -20,22 +20,39 @@
 
 ver=$(./get-version.sh)
 type="SMARTCASH_SMART"
-mn_status=$(smartcash-cli -rpcuser=healthcheck -rpcpassword=healthcheck getmasternodestatus | jq .message)
-block_count="$(smartcash-cli getblockchaininfo | jq .blocks)"
-sync_status="$(smartcash-cli mnsync status | jq .IsBlockchainSynced)"
+mn_status=$(smartcash-cli getmasternodestatus 2>&1)
+if printf "%s" "$mn_status" | grep "error:"; then 
+    mn_status=$(printf "%s" "$mn_status" | sed 's\error: \\g' | jq .message)
+else 
+    mn_status=$(printf "%s" "$mn_status" | jq .message)
+fi
+
+block_count="$(smartcash-cli getblockchaininfo 2>&1)"
+if printf "%s" "$block_count" | grep "error:"; then 
+    block_count=$(printf "%s" "$block_count" | sed 's\error: \\g' | jq .message)   
+else 
+    block_count="$(printf "%s" "$block_count" | jq .blocks)"
+fi
+
+sync_status="$(smartcash-cli mnsync status 2>&1)"
+if printf "%s" "$sync_status" | grep "error:"; then 
+    sync_status=$(printf "%s" "$sync_status" | sed 's\error: \\g' | jq .message) 
+else 
+    sync_status="$(printf "%s" "$sync_status" | jq .IsBlockchainSynced)"
+fi
 
 printf "\
-TYPE: %s \n\
-VERSION: %s \n\
-MN_STATUS: %s \n\
-BLOCKS: %s \n\
-SYNCED: %s \n\
+TYPE: %s
+VERSION: %s
+MN STATUS: %s
+BLOCKS: %s
+SYNCED: %s
 " "$type" "$ver" "$mn_status" "$block_count" "$sync_status" > /home/smartcash/.smartcash/node.info
 
 printf "\
-TYPE: %s \n\
-VERSION: %s \n\
-MN_STATUS: %s \n\
-BLOCKS: %s \n\
-SYNCED: %s \n\
+TYPE: %s
+VERSION: %s
+MN STATUS: %s
+BLOCKS: %s
+SYNCED: %s
 " "$type" "$ver" "$mn_status" "$block_count" "$sync_status"

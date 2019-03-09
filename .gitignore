@@ -1,4 +1,5 @@
 .vscode
-./data/*
-!./data/.gitignore
+data/*
+!data/.gitkeep
+!data/smartcash.conf
 docs
