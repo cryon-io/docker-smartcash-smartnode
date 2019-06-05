@@ -22,14 +22,16 @@ BASEDIR=$(dirname "$0")
 
 PARAM=$(echo "$1" | sed "s/=.*//")
 VALUE=$(echo "$1" | sed "s/[^>]*=//")
+# escape value for sed
+VALUE_FOR_SED=$(echo "$VALUE" | sed -e 's/[\/&]/\\&/g')
 
 case $PARAM in
     ip)
-        TEMP=$(sed "s/externalip=.*/externalip=$VALUE:9678/g" "$BASEDIR/../data/smartcash.conf")
+        TEMP=$(sed "s/externalip=.*/externalip=$VALUE_FOR_SED:9678/g" "$BASEDIR/../data/smartcash.conf")
         printf "%s" "$TEMP" > "$BASEDIR/../data/smartcash.conf"
     ;;
     nodeprivkey)
-        TEMP=$(sed "s/smartnodeprivkey=.*/smartnodeprivkey=$VALUE/g" "$BASEDIR/../data/smartcash.conf")
+        TEMP=$(sed "s/smartnodeprivkey=.*/smartnodeprivkey=$VALUE_FOR_SED/g" "$BASEDIR/../data/smartcash.conf")
         printf "%s" "$TEMP" > "$BASEDIR/../data/smartcash.conf"
     ;;
     PROJECT)
